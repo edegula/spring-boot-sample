@@ -41,4 +41,26 @@ public class TopicService {
         topics.add(topic);
         return topic;
     }
+
+    public Topic updateTopic(Topic topic, String id) {
+
+        for (int i = 0; i < topics.size(); i++) {
+            if (topics.get(i).getId().equals(id)) {
+                topics.set(i, topic);
+                return topic;
+            }
+        }
+
+        return null;
+
+    }
+
+    public boolean deleteTopic(String id) {
+        try {
+            return topics.removeIf(t -> t.getId().equals(id));
+        } catch (UnsupportedOperationException e) {
+            logger.warn("Topic not found : " + id);
+        }
+        return false;
+    }
 }

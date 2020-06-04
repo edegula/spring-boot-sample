@@ -29,11 +29,12 @@ public class TopicController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/topics")
     public ResponseEntity<Topic> addTopic(@RequestBody Topic topic) {
-
         Topic createdTopic = topicService.addTopic(topic);
 
+        // return a 404 not found error
         if (createdTopic == null) return ResponseEntity.notFound().build();
 
+        // populate the HTTP Header Location and return 201 Created
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(createdTopic.getId())
@@ -43,10 +44,24 @@ public class TopicController {
 
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/topics/{id}")
+    public ResponseEntity<Topic> updateTopic(@RequestBody Topic topic, @PathVariable String id) {
+        Topic updatedTopic = topicService.updateTopic(topic, id);
+        if (updatedTopic == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(updatedTopic);
+    }
+
     // uses constructor-based dependency injection
     @Autowired
     public TopicController(TopicService topicService) {
         this.topicService = topicService;
     }
+
+    @RequestMapping(method = RequestMethod.DELETE ,value = "/topics/{id}")
+    public ResponseEntity<Topic> deleteTopic(@PathVariable String id) {
+        if (!topicService.deleteTopic(id)) { return ResponseEntity.notFound().build(); }
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
