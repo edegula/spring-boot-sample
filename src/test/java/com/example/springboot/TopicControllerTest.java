@@ -22,8 +22,24 @@ public class TopicControllerTest {
 
     @Test
     public void getTopic() throws Exception {
+
+        // post a topic
+        mvc.perform(MockMvcRequestBuilders.post("/topics")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\":\"java\",\"name\":\"Core Java\",\"description\":\"Core Java Description\"}"));
+        // get a topic
         mvc.perform(MockMvcRequestBuilders.get("/topics/java").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo("{\"id\":\"java\",\"name\":\"Core Java\",\"description\":\"Core Java Description\"}")));
     }
+
+    @Test
+    public void postTopic() throws Exception {
+        // post one topic
+        mvc.perform(MockMvcRequestBuilders.post("/topics")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\":\"java\",\"name\":\"Core Java\",\"description\":\"Core Java Description\"}"))
+                .andExpect(status().isCreated());
+    }
+
 }
