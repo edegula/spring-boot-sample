@@ -14,6 +14,12 @@ public class TopicController {
     // @Autowired   - field injection is not recommended
     private TopicService topicService;
 
+    // uses constructor-based dependency injection
+    @Autowired
+    public TopicController(TopicService topicService) {
+        this.topicService = topicService;
+    }
+
     @RequestMapping("/topics")
     public ResponseEntity<List> getAllTopics() {
         List<Topic> topics = topicService.getAllTopics();
@@ -49,12 +55,6 @@ public class TopicController {
         Topic updatedTopic = topicService.updateTopic(topic, id);
         if (updatedTopic == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(updatedTopic);
-    }
-
-    // uses constructor-based dependency injection
-    @Autowired
-    public TopicController(TopicService topicService) {
-        this.topicService = topicService;
     }
 
     @RequestMapping(method = RequestMethod.DELETE ,value = "/topics/{id}")
