@@ -22,7 +22,6 @@ public class TopicControllerTest {
 
     @Test
     public void getTopic() throws Exception {
-
         // post a topic
         mvc.perform(MockMvcRequestBuilders.post("/topics")
                 .contentType(MediaType.APPLICATION_JSON)
